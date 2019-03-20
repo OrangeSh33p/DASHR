@@ -8,6 +8,7 @@ public class Follow : MonoBehaviour {
 	public float smoothness;
 	Quaternion originRot;
 	Vector3 originPos;
+	public Transform cameraTransform;
 
 	void Start () {
 		originRot = transform.rotation;

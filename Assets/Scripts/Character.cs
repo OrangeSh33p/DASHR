@@ -5,30 +5,21 @@ using UnityEngine;
 public class Character : MonoBehaviour {
 	public float rotateSpeed;
 	public float dashLength;
-	public float minSpeed;
 	public float maxSpeed;
-	public float currentSpeed;
 	public float acceleration;
-	public float deceleration;
-	public float stopping;
+	public Rigidbody rb;
 
 	void Update () {
-		if (Input.GetKey(KeyCode.Z)) {
-			currentSpeed = Mathf.Min(currentSpeed + acceleration*Time.deltaTime, maxSpeed);
-		} else if (Input.GetKey(KeyCode.S)) {
-			currentSpeed = Mathf.Max(currentSpeed-Time.deltaTime*stopping, minSpeed);
-		}
-		else {
-			currentSpeed = Mathf.Max(currentSpeed-Time.deltaTime*deceleration, minSpeed);
-		}
-		Move ();
-		Rotate();
+		if (Input.GetKey(KeyCode.Z)) Accelerate();
+		
 		if (Input.GetKeyDown(KeyCode.Q)) DashLeft();
 		if (Input.GetKeyDown(KeyCode.D)) DashRight();
+
+		Rotate();		
 	}
 
-	void Move () {
-		transform.position += currentSpeed*Time.deltaTime*transform.forward;
+	void Accelerate () {
+		if (rb.velocity.sqrMagnitude<maxSpeed*maxSpeed) rb.AddForce(acceleration*transform.forward);
 	}
 
 	void Rotate () {
